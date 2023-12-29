@@ -15,7 +15,7 @@ function Restore-TranslationsForApp {
     # Translations need to be restored in the Translations folder in the app folder
     $appTranslationsFolder = Join-Path $AppProjectFolder "Translations"
     $appName = (Get-ChildItem -Path $AppProjectFolder -Filter "app.json" | Get-Content | ConvertFrom-Json).name
-   
+
     Write-Host "Restoring translations for app $appName in $appTranslationsFolder"
 
     Import-Module $PSScriptRoot\EnlistmentHelperFunctions.psm1 -DisableNameChecking
@@ -24,14 +24,14 @@ function Restore-TranslationsForApp {
     $tranlationsPath = Join-Path $translationPackagePath "Translations"
 
     $translationsFound = $false
-    
+
     # Copy the translations from the package to the app folder
     Get-ChildItem $tranlationsPath -Filter *-* -Directory | ForEach-Object {
         $localeFolder = $_.FullName
         $locale = $_.Name
-        
+
         # Translations are located in the ExtensionsV2 folder
-        $translationFilePath = Join-Path $localeFolder "ExtensionsV2/$appName.$locale.xlf" 
+        $translationFilePath = Join-Path $localeFolder "ExtensionsV2/$appName.$locale.xlf"
         if(Test-Path $translationFilePath) {
             Write-Host "Using translation for $appName in $locale"
             $translationsFound = $true
